@@ -1,0 +1,5 @@
+---
+- name: install apache2
+  hosts: demo
+  roles: 
+   - apache2

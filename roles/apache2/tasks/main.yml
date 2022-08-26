@@ -1,0 +1,27 @@
+---
+# tasks file for roles/apache2
+- name: Run the equivalent of "apt-get update" as a separate step
+  ansible.builtin.apt:
+    update_cache: yes
+- name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+- name: Install apache httpd  (state=present is optional)
+  ansible.builtin.apt:
+    name: apache2
+    state: present
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: index.html
+    dest: "{{ item }}"
+  loop:
+    - "/var/www/html"
+    - "/usr/share/apache2/html"
+  notify:
+    - copy file
+
+- name: Ensure apache is running
+  ansible.builtin.service:
+    name: apache2
+    state: started

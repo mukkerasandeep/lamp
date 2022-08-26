@@ -1,0 +1,6 @@
+---
+# handlers file for roles/apache2
+- name: copy file
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
